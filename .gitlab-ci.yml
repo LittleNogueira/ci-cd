@@ -1,13 +1,13 @@
 image: docker:stable
 
 services:
-  - docker:dind
+- docker:dind
 
 build:
   stage: build
-    - docker build -t minha-imagem .
+  - docker build -t minha-imagem .
 
 build-test:
   stage: build
-    - docker images
+  - docker images
 
