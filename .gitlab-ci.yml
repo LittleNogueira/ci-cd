@@ -1,4 +1,13 @@
-job: 
-  script:
-  - echo "Hello World!"
-  - ls -la
+image: docker:stable
+
+services:
+  - docker:dind
+
+build:
+  stage: build
+    - docker build -t minha-imagem .
+
+build-test:
+  stage: build
+    - docker images
+
