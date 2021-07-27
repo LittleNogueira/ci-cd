@@ -1,3 +1,4 @@
 job: 
   script:
   - echo "Hello World!"
+  - ls -la
