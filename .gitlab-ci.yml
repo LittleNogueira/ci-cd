@@ -5,9 +5,11 @@ services:
 
 build:
   stage: build
+  script:
   - docker build -t minha-imagem .
 
 build-test:
   stage: build
+  script:
   - docker images
 
