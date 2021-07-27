@@ -1,6 +1,6 @@
-build:
+build-image:
   image: docker:stable
-  stage: build
+  stage: .pre
   services:
     - docker:dind
   before_script:
@@ -10,3 +10,27 @@ build:
     - docker images
     - docker tag minha-imagem littlenogueira/minha-imagem:latest
     - docker push littlenogueira/minha-imagem:latest
+
+build-project:
+  image: littlenogueira/minha-imagem:latest
+  stage: build
+  services:
+    - docker:dind
+    - mysql:5.7
+  variables:
+    MYSQL_USER: devops_dev
+    MYSQL_PASSWORD: mestre
+    MYSQL_DATABASE: todo_dev
+    MYSQL_ROOT_PASSWORD: senha
+
+    DB_NAME: 'todo_dev'
+    DB USER: 'devops_dev'
+    DB_PASSWORD: 'mestre'
+    DB_PORT: '3306'
+    DB_HOST: 'mysql'
+    SECRET_KEY: 'r*5ltfzw-61ksdm41fuul8+hxs$86yo9%k1%k=(!@=-wv4qtyv'
+  dependencies:
+    - build-image
+  script:
+    - python manage.py makemigrations
+    - python manage.py migrate
