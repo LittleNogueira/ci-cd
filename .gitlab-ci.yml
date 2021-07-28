@@ -86,10 +86,10 @@ terraform-deploy:
   script:
     - terraform apply -auto-approve
     - terraform output instance_ip
-    - echo "EC2_IP_PUBLIC=hello" >> build.env
+    - echo "EC2_IP_PUBLIC=hello" >> .env
   artifacts:
     reports:
-      dotenv: build.env
+      dotenv: .env
 
 application-deploy:
   image: littlenogueira/minha-imagem:latest
