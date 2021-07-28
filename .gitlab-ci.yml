@@ -1,58 +1,58 @@
-build-image:
-  image: docker:stable
-  stage: .pre
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-  script:
-    - docker build -t minha-imagem .
-    - docker images
-    - docker tag minha-imagem littlenogueira/minha-imagem:latest
-    - docker push littlenogueira/minha-imagem:latest
+# build-image:
+#   image: docker:stable
+#   stage: .pre
+#   services:
+#     - docker:dind
+#   before_script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+#   script:
+#     - docker build -t minha-imagem .
+#     - docker images
+#     - docker tag minha-imagem littlenogueira/minha-imagem:latest
+#     - docker push littlenogueira/minha-imagem:latest
 
-build-project:
-  image: littlenogueira/minha-imagem:latest
-  stage: build
-  services:
-    - mysql:5.7
-  variables:
-    MYSQL_USER: $DB_USER
-    MYSQL_PASSWORD: $DB_PASSWORD
-    MYSQL_DATABASE: $DB_NAME
-    MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+# build-project:
+#   image: littlenogueira/minha-imagem:latest
+#   stage: build
+#   services:
+#     - mysql:5.7
+#   variables:
+#     MYSQL_USER: $DB_USER
+#     MYSQL_PASSWORD: $DB_PASSWORD
+#     MYSQL_DATABASE: $DB_NAME
+#     MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
 
-    DB_NAME: $DB_NAME
-    DB_USER: $DB_USER
-    DB_PASSWORD: $DB_PASSWORD
-    DB_PORT: '3306'
-    DB_HOST: 'mysql'
-    SECRET_KEY: $DB_SECRET_KEY
-  script:
-    - python manage.py makemigrations
-    - python manage.py migrate
+#     DB_NAME: $DB_NAME
+#     DB_USER: $DB_USER
+#     DB_PASSWORD: $DB_PASSWORD
+#     DB_PORT: '3306'
+#     DB_HOST: 'mysql'
+#     SECRET_KEY: $DB_SECRET_KEY
+#   script:
+#     - python manage.py makemigrations
+#     - python manage.py migrate
 
-test-unit:
-  image: littlenogueira/minha-imagem:latest
-  stage: test
-  services:
-    - mysql:5.7
-  variables:
-    MYSQL_USER: $DB_USER
-    MYSQL_PASSWORD: $DB_PASSWORD
-    MYSQL_DATABASE: $DB_NAME
-    MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+# test-unit:
+#   image: littlenogueira/minha-imagem:latest
+#   stage: test
+#   services:
+#     - mysql:5.7
+#   variables:
+#     MYSQL_USER: $DB_USER
+#     MYSQL_PASSWORD: $DB_PASSWORD
+#     MYSQL_DATABASE: $DB_NAME
+#     MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
 
-    DB_NAME: $DB_NAME
-    DB_USER: $DB_USER
-    DB_PASSWORD: $DB_PASSWORD
-    DB_PORT: '3306'
-    DB_HOST: 'mysql'
-    SECRET_KEY: $DB_SECRET_KEY
-  script:
-    - python -m unittest setUp
+#     DB_NAME: $DB_NAME
+#     DB_USER: $DB_USER
+#     DB_PASSWORD: $DB_PASSWORD
+#     DB_PORT: '3306'
+#     DB_HOST: 'mysql'
+#     SECRET_KEY: $DB_SECRET_KEY
+#   script:
+#     - python -m unittest setUp
     
-terraform-validate:
+# terraform-validate:
   stage: test
   image: 
     name: hashicorp/terraform:light
@@ -78,5 +78,5 @@ terraform-deploy:
     - terraform init -input=false
   script:
     - terraform apply -auto-approve
-    - terraform output lb_address
+    - terraform output instance_ip
     - echo "Bora bb"
