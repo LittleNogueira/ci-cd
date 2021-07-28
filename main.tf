@@ -21,8 +21,3 @@ resource "aws_instance" "application-ci-cd" {
     Name = "application-ci-cd"
   }
 }
-
-resource "local_file" "ip-file" {
-    content  = aws_instance.application-ci-cd.public_ip
-    filename = "ip.txt"
-}
