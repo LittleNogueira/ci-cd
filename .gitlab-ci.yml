@@ -85,12 +85,16 @@ terraform-deploy:
     - terraform init -input=false
   script:
     - terraform apply -auto-approve
-    - export TEST_GITLAB_CI=terraform output instance_ip
+    - terraform output instance_ip
+    - echo "EC2_IP_PUBLIC=hello" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
 
 application-deploy:
   image: littlenogueira/minha-imagem:latest
   stage: deploy
-  services:
-    - mysql:5.7
+  dependencies:
+    - terraform-deploy
   script:
     - printenv
