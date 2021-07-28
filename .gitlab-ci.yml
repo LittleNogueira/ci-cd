@@ -86,6 +86,7 @@ terraform-deploy:
   script:
     - terraform apply -auto-approve
     - echo EC2_IP_PUBLIC=&terraform output instance_ip >> .env
+    - cat .env
   artifacts:
     reports:
       dotenv: .env
