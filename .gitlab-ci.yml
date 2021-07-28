@@ -64,10 +64,15 @@ terraform-validate:
       - /usr/bin/env
       - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   script:
+    - terraform init
     - terraform validate
     - terraform plan
     - terraform apply -auto-approve 
     - cat ip.txt
+  artifacts:
+    paths:
+      - .terraform/
+    expire_in: never
 
 # terraform-deploy:
 #   stage: deploy
