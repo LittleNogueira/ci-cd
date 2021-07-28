@@ -21,3 +21,7 @@ resource "aws_instance" "application-ci-cd" {
     Name = "application-ci-cd"
   }
 }
+
+output "instance_ip" {
+  value = aws_instance.application-ci-cd.public_ip
+}

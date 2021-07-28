@@ -51,7 +51,7 @@ test-unit:
     SECRET_KEY: $DB_SECRET_KEY
   script:
     - python -m unittest setUp
-
+    
 terraform-validate:
   stage: test
   image: 
@@ -63,6 +63,20 @@ terraform-validate:
     - sed -i 's/${TOKEN_TERRAFORM}/'${TOKEN_TERRAFORM}'/g' .terraformrc
     - terraform init -input=false
   script:
-    - cat .terraformrc
     - terraform validate
     - terraform plan
+
+terraform-deploy:
+  stage: deploy
+  image: 
+    name: hashicorp/terraform:light
+    entrypoint:
+      - /usr/bin/env
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  before_script:
+    - sed -i 's/${TOKEN_TERRAFORM}/'${TOKEN_TERRAFORM}'/g' .terraformrc
+    - terraform init -input=false
+  script:
+    - terraform apply -auto-approve
+    - terraform output lb_address
+    - echo "Bora bb"
