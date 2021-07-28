@@ -65,6 +65,8 @@ terraform-validate:
       - /usr/bin/env
       - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   script:
+    - pwd
+    - export TF_CLI_CONFIG_FILE=".terraformrc"
     - terraform init -input=false
     - terraform validate
     - terraform plan
