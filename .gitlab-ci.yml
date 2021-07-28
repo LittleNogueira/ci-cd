@@ -70,10 +70,9 @@ terraform-validate:
     - terraform plan
     - terraform apply -auto-approve 
     - cat ip.txt
-  artifacts:
+  cache:
     paths:
-      - .terraform/
-    expire_in: never
+      - .terraform
 
 # terraform-deploy:
 #   stage: deploy
