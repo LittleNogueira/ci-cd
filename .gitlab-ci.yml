@@ -1,6 +1,13 @@
+stages:
+  - pre-build
+  - build
+  - test
+  - deploy-infra
+  - deploy
+
 # build-image:
 #   image: docker:stable
-#   stage: .pre
+#   stage: pre-build
 #   services:
 #     - docker:dind
 #   before_script:
@@ -67,7 +74,7 @@
 #   - terraform plan
 
 terraform-deploy:
-  stage: deploy
+  stage: deploy-infra
   image: 
     name: hashicorp/terraform:light
     entrypoint:
@@ -78,5 +85,12 @@ terraform-deploy:
     - terraform init -input=false
   script:
     - terraform apply -auto-approve
-    - terraform output instance_ip
-    - echo "Bora bb"
+    - export TEST_GITLAB_CI=terraform output instance_ip
+
+application-deploy:
+  image: littlenogueira/minha-imagem:latest
+  stage: deploy
+  services:
+    - mysql:5.7
+  script:
+    - printenv
