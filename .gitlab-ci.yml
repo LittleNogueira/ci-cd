@@ -68,8 +68,8 @@ terraform-validate:
     - terraform init -input=false
     - terraform validate
     - terraform plan
-    # - terraform apply -auto-approve 
-    # - cat ip.txt
+    - terraform apply -auto-approve 
+    - cat ip.txt
 
 # terraform-deploy:
 #   stage: deploy
