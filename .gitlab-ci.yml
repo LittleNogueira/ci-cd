@@ -63,8 +63,9 @@ terraform-validate:
     entrypoint:
       - /usr/bin/env
       - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-  script:
+  before_script:
+    - sed -i 's/${TOKEN_TERRAFORM}/'${TOKEN_TERRAFORM}'/g' .terraformrc
     - terraform init -input=false
+  script:
     - terraform validate
     - terraform plan
-    - terraform apply -auto-approve 
