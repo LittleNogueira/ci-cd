@@ -96,7 +96,6 @@ application-deploy:
   dependencies:
     - terraform-deploy
   before_script:
-    - echo $EC2_IP_PUBLIC
     - apk update && apk add openssh-client bash
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s)
