@@ -91,7 +91,7 @@ terraform-deploy:
       dotenv: .env
 
 application-deploy:
-  image: littlenogueira/minha-imagem:latest
+  image: alpine:3.11
   stage: deploy
   dependencies:
     - terraform-deploy
