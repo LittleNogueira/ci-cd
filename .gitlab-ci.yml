@@ -60,18 +60,18 @@ test-unit:
     - python -m unittest setUp
     
 terraform-validate:
-stage: test
-image: 
-  name: hashicorp/terraform:light
-  entrypoint:
-    - /usr/bin/env
-    - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-before_script:
-  - sed -i 's/${TOKEN_TERRAFORM}/'${TOKEN_TERRAFORM}'/g' .terraformrc
-  - terraform init -input=false
-script:
-  - terraform validate
-  - terraform plan
+  stage: test
+  image: 
+    name: hashicorp/terraform:light
+    entrypoint:
+      - /usr/bin/env
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  before_script:
+    - sed -i 's/${TOKEN_TERRAFORM}/'${TOKEN_TERRAFORM}'/g' .terraformrc
+    - terraform init -input=false
+  script:
+    - terraform validate
+    - terraform plan
 
 terraform-deploy:
   stage: deploy-infra
