@@ -95,5 +95,16 @@ application-deploy:
   stage: deploy
   dependencies:
     - terraform-deploy
+  before_script:
+    - apk update && apk add openssh-client bash
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - touch ~/.ssh/config
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - ssh-keyscan -H $EC2_IP_PUBLIC >> ~/.ssh/known_hosts
+#    - ssh aluraverde@192.168.1.34 'cd /Users/Shared/deploy/, tar xfz arquivos.tgz; /usr/local/bin/docker-compose up #-d'
+#    - sudo yum update -y
+#      - sudo yum install -y docker
   script:
     - printenv
