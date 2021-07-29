@@ -91,12 +91,11 @@ terraform-deploy:
       dotenv: .env
 
 application-deploy:
-  image: alpine:3.11
   stage: deploy
   dependencies:
     - terraform-deploy
   before_script:
-    - apk update && apk add openssh-client bash
+    - apt-get update && apt-install openssh-client
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
