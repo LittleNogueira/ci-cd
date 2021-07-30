@@ -42,7 +42,7 @@ resource "aws_instance" "application-ci-cd" {
   ami           = "ami-0747bdcabd34c712a"
   instance_type = "t2.micro"
   key_name      = "gitlab-ssh"
-  security_groups = [aws_security_group.gitlab-security-group.id]
+  security_groups = ["${aws_security_group.gitlab-security-group.id}"]
 
   tags = {
     Name = "application-ci-cd"
