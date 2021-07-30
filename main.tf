@@ -8,7 +8,7 @@ terraform {
   }
 }
 
-required_provider "aws" {
+required_providers "aws" {
   version = "~> 3.0"
   region  = "us-east-1"
 }
