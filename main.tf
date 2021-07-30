@@ -47,6 +47,10 @@ resource "aws_instance" "application-ci-cd" {
   tags = {
     Name = "application-ci-cd"
   }
+
+  depends_on = [
+    aws_security_group.gitlab-security-group
+  ]
 }
 
 output "instance_ip" {
