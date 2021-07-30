@@ -6,11 +6,17 @@ terraform {
       name = "aplicacao-ci-cd"
     }
   }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
 }
 
-required_providers "aws" {
-  version = "~> 3.0"
-  region  = "us-east-1"
+provider "aws" {
+  region = "us-east-1"
 }
 
 resource "aws_security_group" "gitlab-security-group" {
