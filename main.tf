@@ -8,7 +8,7 @@ terraform {
   }
 }
 
-provider "aws" {
+required_provider "aws" {
   version = "~> 3.0"
   region  = "us-east-1"
 }
@@ -48,9 +48,6 @@ resource "aws_instance" "application-ci-cd" {
     Name = "application-ci-cd"
   }
 
-  depends_on = [
-    aws_security_group.gitlab-security-group
-  ]
 }
 
 output "instance_ip" {
