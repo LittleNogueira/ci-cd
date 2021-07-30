@@ -1,9 +1,9 @@
-# stages:
-#   - pre-build
-#   - build
-#   - test
-#   - deploy-infra
-#   - deploy
+stages:
+  - pre-build
+  - build
+  - test
+  - deploy-infra
+  - deploy
 
 # build-image:
 #   image: docker:stable
