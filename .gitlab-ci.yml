@@ -1,77 +1,77 @@
-stages:
-  - pre-build
-  - build
-  - test
-  - deploy-infra
-  - deploy
+# stages:
+#   - pre-build
+#   - build
+#   - test
+#   - deploy-infra
+#   - deploy
 
-build-image:
-  image: docker:stable
-  stage: pre-build
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-  script:
-    - docker build -t minha-imagem .
-    - docker images
-    - docker tag minha-imagem littlenogueira/minha-imagem:latest
-    - docker push littlenogueira/minha-imagem:latest
+# build-image:
+#   image: docker:stable
+#   stage: pre-build
+#   services:
+#     - docker:dind
+#   before_script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+#   script:
+#     - docker build -t minha-imagem .
+#     - docker images
+#     - docker tag minha-imagem littlenogueira/minha-imagem:latest
+#     - docker push littlenogueira/minha-imagem:latest
 
-build-project:
-  image: littlenogueira/minha-imagem:latest
-  stage: build
-  services:
-    - mysql:5.7
-  variables:
-    MYSQL_USER: $DB_USER
-    MYSQL_PASSWORD: $DB_PASSWORD
-    MYSQL_DATABASE: $DB_NAME
-    MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+# build-project:
+#   image: littlenogueira/minha-imagem:latest
+#   stage: build
+#   services:
+#     - mysql:5.7
+#   variables:
+#     MYSQL_USER: $DB_USER
+#     MYSQL_PASSWORD: $DB_PASSWORD
+#     MYSQL_DATABASE: $DB_NAME
+#     MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
 
-    DB_NAME: $DB_NAME
-    DB_USER: $DB_USER
-    DB_PASSWORD: $DB_PASSWORD
-    DB_PORT: '3306'
-    DB_HOST: 'mysql'
-    SECRET_KEY: $DB_SECRET_KEY
-  script:
-    - python manage.py makemigrations
-    - python manage.py migrate
+#     DB_NAME: $DB_NAME
+#     DB_USER: $DB_USER
+#     DB_PASSWORD: $DB_PASSWORD
+#     DB_PORT: '3306'
+#     DB_HOST: 'mysql'
+#     SECRET_KEY: $DB_SECRET_KEY
+#   script:
+#     - python manage.py makemigrations
+#     - python manage.py migrate
 
-test-unit:
-  image: littlenogueira/minha-imagem:latest
-  stage: test
-  services:
-    - mysql:5.7
-  variables:
-    MYSQL_USER: $DB_USER
-    MYSQL_PASSWORD: $DB_PASSWORD
-    MYSQL_DATABASE: $DB_NAME
-    MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+# test-unit:
+#   image: littlenogueira/minha-imagem:latest
+#   stage: test
+#   services:
+#     - mysql:5.7
+#   variables:
+#     MYSQL_USER: $DB_USER
+#     MYSQL_PASSWORD: $DB_PASSWORD
+#     MYSQL_DATABASE: $DB_NAME
+#     MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
 
-    DB_NAME: $DB_NAME
-    DB_USER: $DB_USER
-    DB_PASSWORD: $DB_PASSWORD
-    DB_PORT: '3306'
-    DB_HOST: 'mysql'
-    SECRET_KEY: $DB_SECRET_KEY
-  script:
-    - python -m unittest setUp
+#     DB_NAME: $DB_NAME
+#     DB_USER: $DB_USER
+#     DB_PASSWORD: $DB_PASSWORD
+#     DB_PORT: '3306'
+#     DB_HOST: 'mysql'
+#     SECRET_KEY: $DB_SECRET_KEY
+#   script:
+#     - python -m unittest setUp
     
-terraform-validate:
-  stage: test
-  image: 
-    name: hashicorp/terraform:light
-    entrypoint:
-      - /usr/bin/env
-      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-  before_script:
-    - sed -i 's/${TOKEN_TERRAFORM}/'${TOKEN_TERRAFORM}'/g' .terraformrc
-    - terraform init -input=false
-  script:
-    - terraform validate
-    - terraform plan
+# terraform-validate:
+#   stage: test
+#   image: 
+#     name: hashicorp/terraform:light
+#     entrypoint:
+#       - /usr/bin/env
+#       - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+#   before_script:
+#     - sed -i 's/${TOKEN_TERRAFORM}/'${TOKEN_TERRAFORM}'/g' .terraformrc
+#     - terraform init -input=false
+#   script:
+#     - terraform validate
+#     - terraform plan
 
 terraform-deploy:
   stage: deploy-infra
@@ -95,8 +95,13 @@ application-deploy:
   dependencies:
     - terraform-deploy
   before_script:
-    - echo $SSH_PRIVATE_KEY > gitlab-ssh.pem
-    - ssh -i "gitlab-ssh.pem" ec2-user@$EC2_IP_PUBLIC 'sudo yum update -y; sudo yum install -y docker; sudo usermod -aG docker ec2-user'
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - touch ~/.ssh/config
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - ssh-keyscan -H $EC2_IP_PUBLIC >> ~/.ssh/known_hosts
+    - ssh ubuntu@$EC2_IP_PUBLIC 'echo "Hello World!"'
   script:
     - echo "BORA"
     
