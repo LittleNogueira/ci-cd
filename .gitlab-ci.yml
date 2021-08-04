@@ -101,9 +101,9 @@ application-deploy:
     - touch ~/.ssh/config
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh-keyscan -H $EC2_IP_PUBLIC >> ~/.ssh/known_hosts
-    - ssh ec2-user@$EC2_IP_PUBLIC 'sudo yum update -y; sudo amazon-linux-extras install docker; sudo service docker start; sudo usermod -a -G docker ec2-user'
+    - ssh ubuntu@$EC2_IP_PUBLIC 'sudo apt-get install -y docker-ce'
   script:
     - tar cfz arquivos.tgz *
-    - scp arquivos.tgz ec2-user@$EC2_IP_PUBLIC:/home/ubuntu/
-    - ssh ec2-user@$EC2_IP_PUBLIC 'docker info'
+    - scp arquivos.tgz ubuntu@$EC2_IP_PUBLIC:/home/ubuntu/
+    - ssh ubuntu@$EC2_IP_PUBLIC 'docker info'
     
