@@ -32,6 +32,15 @@ resource "aws_security_group" "gitlab-security-group" {
     ]
   }
 
+  ingress {
+    from_port        = 8000
+    to_port          = 8000
+    protocol         = "http"
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
