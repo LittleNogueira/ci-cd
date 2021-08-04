@@ -105,9 +105,11 @@ application-deploy:
     - ssh ubuntu@$EC2_IP_PUBLIC 'sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
     - ssh ubuntu@$EC2_IP_PUBLIC 'sudo apt-get update'
     - ssh ubuntu@$EC2_IP_PUBLIC 'sudo apt-get install -y docker-ce'
+    - ssh ubuntu@$EC2_IP_PUBLIC 'sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+    - sudo chmod +x /usr/local/bin/docker-compose
   script:
     - tar cfz arquivos.tgz *
     - scp arquivos.tgz ubuntu@$EC2_IP_PUBLIC:/home/ubuntu/
     - ssh ubuntu@$EC2_IP_PUBLIC 'sudo docker info'
-    - ssh ubuntu@$EC2_IP_PUBLIC 'tar xfz arquivos.tgz; sudo docker-compose up -d'
+    - ssh ubuntu@$EC2_IP_PUBLIC 'tar xfz arquivos.tgz; sudo /usr/local/bin/docker-compose up -d'
     
