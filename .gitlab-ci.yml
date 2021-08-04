@@ -104,5 +104,5 @@ application-deploy:
   script:
     - tar cfz arquivos.tgz *
     #- scp arquivos.tgz ubuntu@$EC2_IP_PUBLIC:˜/
-    - ssh ubuntu@EC2_IP_PUBLIC 'pwd'
+    - ssh ubuntu@$EC2_IP_PUBLIC 'pwd'
     
