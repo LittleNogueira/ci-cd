@@ -101,6 +101,9 @@ application-deploy:
     - touch ~/.ssh/config
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh-keyscan -H $EC2_IP_PUBLIC >> ~/.ssh/known_hosts
+    - ssh ubuntu@$EC2_IP_PUBLIC 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
+    - ssh ubuntu@$EC2_IP_PUBLIC 'sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
+    - ssh ubuntu@$EC2_IP_PUBLIC 'sudo apt-get update'
     - ssh ubuntu@$EC2_IP_PUBLIC 'sudo apt-get install -y docker-ce'
   script:
     - tar cfz arquivos.tgz *
