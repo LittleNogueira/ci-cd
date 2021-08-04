@@ -103,6 +103,6 @@ application-deploy:
     - ssh-keyscan -H $EC2_IP_PUBLIC >> ~/.ssh/known_hosts
   script:
     - tar cfz arquivos.tgz *
-    - scp arquivos.tgz ubuntu@$EC2_IP_PUBLIC:˜/
+    #- scp arquivos.tgz ubuntu@$EC2_IP_PUBLIC:˜/
     - ssh ubuntu@EC2_IP_PUBLIC 'pwd'
     
