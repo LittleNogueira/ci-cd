@@ -108,5 +108,5 @@ application-deploy:
   script:
     - tar cfz arquivos.tgz *
     - scp arquivos.tgz ubuntu@$EC2_IP_PUBLIC:/home/ubuntu/
-    - ssh ubuntu@$EC2_IP_PUBLIC 'docker info'
+    - ssh ubuntu@$EC2_IP_PUBLIC 'sudo docker info'
     
