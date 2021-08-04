@@ -101,7 +101,8 @@ application-deploy:
     - touch ~/.ssh/config
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh-keyscan -H $EC2_IP_PUBLIC >> ~/.ssh/known_hosts
-    - ssh ubuntu@$EC2_IP_PUBLIC 'echo "Hello World!"'
   script:
-    - echo "BORA"
+    - tar cfz arquivos.tgz *
+    - scp arquivos.tgz ubuntu@$EC2_IP_PUBLIC:˜/
+    - ssh ubuntu@EC2_IP_PUBLIC 'pwd'
     
