@@ -1,7 +1,7 @@
 
 # CI/CD
 
-![Logo](https://miro.medium.com/max/264/1*0lzbnKgE5ILm4gctPH-EJg.jpeg)
+![Logo](https://blog.terraforge.io/02/terraform_gitlab.png)
 
 This project
 
