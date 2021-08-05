@@ -113,4 +113,3 @@ application-deploy:
     - scp arquivos.tgz ubuntu@$EC2_IP_PUBLIC:/home/ubuntu/
     - ssh ubuntu@$EC2_IP_PUBLIC 'docker info'
     - ssh ubuntu@$EC2_IP_PUBLIC 'tar xfz arquivos.tgz; /usr/local/bin/docker-compose up -d'
-
